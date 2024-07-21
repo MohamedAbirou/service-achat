@@ -14,18 +14,15 @@
         http-equiv="X-UA-Compatible"
         content="ie=edge"
     >
+    <meta
+        name="csrf-token"
+        content="{{ csrf_token() }}"
+    >
+
     <title>Livewire + Mary UI</title>
 
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-
-    {{-- Cropper.js --}}
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.js"></script>
-    <link
-        rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.css"
-    />
-
 </head>
 
 <body class="font-sans antialiased">
@@ -46,11 +43,27 @@
             </label>
 
             {{-- Brand --}}
-            <h3 class="font-bold">ADSGLORY Service Achat</h3>
+            <a
+                href="/dashboard"
+                class="font-bold"
+            >ADSGLORY Service Achat</a>
         </x-slot:brand>
 
         {{-- Right side actions --}}
         <x-slot:actions>
+            <x-mary-button
+                tooltip-left="switch-theme"
+                class="btn-circle"
+            >
+                <x-mary-theme-toggle />
+            </x-mary-button>
+            <x-mary-button
+                icon="o-power"
+                class="btn-circle"
+                tooltip-left="logoff"
+                no-wire-navigate
+                onclick="document.getElementById('logout-form').submit();"
+            />
             <x-mary-button
                 label="Messages"
                 icon="o-envelope"
@@ -58,13 +71,32 @@
                 class="btn-ghost btn-sm"
                 responsive
             />
-            <x-mary-button
-                label="Notifications"
-                icon="o-bell"
-                link="###"
-                class="btn-ghost btn-sm"
-                responsive
-            />
+            <x-mary-dropdown>
+                <x-slot:trigger>
+                    <x-mary-button
+                        icon="o-bell"
+                        label="Notifications"
+                        class="btn-ghost btn-sm"
+                        responsive
+                    />
+                </x-slot:trigger>
+
+                @if (auth()->user()->notifications->isEmpty())
+                    <x-mary-menu-item
+                        title="No notifications available"
+                        responsive
+                    />
+                @else
+                    @foreach (auth()->user()->notifications as $notification)
+                        <x-mary-menu-item
+                            title="{{ $notification->data['message'] }}"
+                            link="{{ route('single-request', $notification->data['request_id']) }}"
+                            class="text-white hover:text-white {{ $notification->data['status'] == 'approved' ? 'bg-emerald-500 hover:bg-emerald-600' : ($notification->data['status'] == 'pending' ? 'bg-amber-500 hover:bg-amber-600' : 'bg-rose-600 hover:bg-rose-700') }}"
+                            responsive
+                        />
+                    @endforeach
+                @endif
+            </x-mary-dropdown>
         </x-slot:actions>
     </x-mary-nav>
 
@@ -87,20 +119,14 @@
                 <x-mary-list-item
                     :item="$user"
                     value="first_name"
-                    sub-value="email"
                     no-separator
                     no-hover
                     class="pt-2"
+                    link="/user/profile"
                 >
-                    <x-slot:actions>
-                        <x-mary-button
-                            icon="o-power"
-                            class="btn-circle btn-ghost btn-xs"
-                            tooltip-left="logoff"
-                            no-wire-navigate
-                            link="/logout"
-                        />
-                    </x-slot:actions>
+                    <x-slot:sub-value
+                        class="bg-{{ ($user->role == 'employee' ? 'emerald-500' : $user->role == 'manager') ? 'amber-500' : 'rose-600 ' }} px-5 py-0.5 mt-1 text-white font-semibold rounded-full text-lg w-fit capitalize"
+                    >{{ $user->role }}</x-slot:sub-value>
                 </x-mary-list-item>
 
                 <x-mary-menu-separator />
@@ -111,38 +137,88 @@
                 <x-mary-menu-item
                     title="dashboard"
                     icon="o-home"
-                    link="/dashboard"
+                    link="{{ route('dashboard') }}"
                 />
-                <x-mary-menu-item
-                    title="Users"
-                    icon="o-user"
-                    link="/users"
-                />
-                <x-mary-menu-item
-                    title="Products"
-                    icon="o-archive-box"
-                    link="/products"
-                />
-                <x-mary-menu-item
-                    title="Categories"
-                    icon="o-home"
-                    link="/categories"
-                />
-                {{-- <x-mary-menu-sub title="Settings" icon="o-cog-6-tooth">
-                    <x-mary-menu-item title="Wifi" icon="o-wifi" link="####" />
-                    <x-mary-menu-item title="Archives" icon="o-archive-box" link="####" />
-                </x-mary-menu-sub> --}}
+
+                @can('manage-users')
+                    <x-mary-menu-item
+                        title="Users"
+                        icon="o-user"
+                        link="{{ route('users') }}"
+                    />
+                @endcan
+
+                @can('manage-products')
+                    <x-mary-menu-item
+                        title="Products"
+                        icon="o-archive-box"
+                        link="{{ route('products') }}"
+                    />
+                @endcan
+
+                @can('manage-categories')
+                    <x-mary-menu-item
+                        title="Categories"
+                        icon="o-squares-2x2"
+                        link="{{ route('categories') }}"
+                    />
+                @endcan
+                @can('manage-requests')
+                    <x-mary-menu-item
+                        title="Requests"
+                        icon="o-inbox"
+                        link="{{ route('requests') }}"
+                    />
+                @endcan
+                {{-- @can('manage-requests')
+                    <x-mary-menu-sub
+                        title="Requests"
+                        icon="o-cog-6-tooth"
+                    >
+                        <x-mary-menu-item
+                            title="Manage Requests"
+                            icon="o-inbox"
+                            link="{{ route('requests') }}"
+                        />
+                        <x-mary-menu-item
+                            title="Create Request"
+                            icon="o-plus"
+                            link="{{ route('requests.create') }}"
+                        />
+                    </x-mary-menu-sub>
+                @endcan --}}
             </x-mary-menu>
         </x-slot:sidebar>
 
         {{-- The `$slot` goes here --}}
         <x-slot:content>
+            {{-- Header --}}
+            @if (isset($header))
+                <header class="bg-white dark:bg-gray-800 shadow">
+                    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+                        {{ $header }}
+                    </div>
+                </header>
+            @endif
+
+            {{-- Content --}}
             {{ $slot }}
         </x-slot:content>
     </x-mary-main>
 
     {{--  TOAST area --}}
     <x-mary-toast />
+
+    <form
+        id="logout-form"
+        action="{{ route('logout') }}"
+        method="POST"
+        style="display: none;"
+    >
+        @csrf
+    </form>
+
+    @stack('modals')
 
 </body>
 

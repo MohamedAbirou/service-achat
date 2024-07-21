@@ -5,3 +5,18 @@
 [x-cloak] {
     display: none;
 }
+
+@layer components {
+    .bg-secondary-500 {
+        background-color: rgb(var(--color-secondary-500));
+    }
+    .bg-secondary-700 {
+        background-color: rgb(var(--color-secondary-700));
+    }
+    .bg-secondary-200 {
+        background-color: rgb(var(--color-secondary-200));
+    }
+    .bg-secondary-400 {
+        background-color: rgb(var(--color-secondary-400));
+    }
+}

@@ -16,11 +16,26 @@
                 id="query"
                 icon="o-bolt"
                 placeholder="Search..."
-                wire:model.debounce.300ms="query"
+                wire:model="query"
+                class="w-full"
             />
         </x-slot:middle>
         <x-slot:actions>
-            <x-mary-button icon="o-funnel" />
+            <x-mary-button
+                class="btn-primary"
+                wire:click="search"
+                spinner="search"
+            >Search</x-mary-button>
+            <x-mary-dropdown icon="o-funnel">
+                @foreach ($departments as $department)
+                    <x-mary-menu-item wire:key="{{ $department }}">
+                        <x-mary-checkbox
+                            label="{{ $department }}"
+                            value="{{ $department }}"
+                        />
+                    </x-mary-menu-item>
+                @endforeach
+            </x-mary-dropdown>
             <x-mary-button
                 icon="o-plus"
                 class="btn-primary"
@@ -38,22 +53,37 @@
         with-pagination
     >
 
-        {{-- Special `actions` slot --}}
-        @scope('cell_actions', $user)
+        {{-- Special `role` slot --}}
+        @scope('cell_role', $user)
             <div class="flex items-center space-x-2 justify-start w-fit">
-                <x-mary-button
-                    icon="o-pencil-square"
-                    wire:click="openUpdateUserModal({{ $user->id }})"
-                    spinner="openUpdateUserModal({{ $user->id }})"
-                    class="btn-sm"
-                />
-                <x-mary-button
-                    icon="o-trash"
-                    wire:click="openDeleteUserModal({{ $user->id }})"
-                    spinner="openDeleteUserModal({{ $user->id }})"
-                    class="btn-sm bg-red-500 text-white hover:bg-red-600"
+                <x-mary-badge
+                    class="pb-0.5 text-white font-semibold
+           {{ $user->role == 'employee' ? 'bg-emerald-500' : ($user->role == 'manager' ? 'bg-amber-500' : 'bg-rose-600') }}"
+                    value="{{ ucfirst($user->role) }}"
                 />
             </div>
+        @endscope
+
+        {{-- Special `actions` slot --}}
+        @scope('cell_actions', $user)
+            @if ($user->id !== auth()->user()->id)
+                <div class="flex items-center space-x-2 justify-start w-fit">
+                    <x-mary-button
+                        icon="o-pencil-square"
+                        wire:click="openUpdateUserModal({{ $user->id }})"
+                        spinner="openUpdateUserModal({{ $user->id }})"
+                        class="btn-sm"
+                    />
+                    <x-mary-button
+                        icon="o-trash"
+                        wire:click="openDeleteUserModal({{ $user->id }})"
+                        spinner="openDeleteUserModal({{ $user->id }})"
+                        class="btn-sm bg-red-500 text-white hover:bg-red-600"
+                    />
+                </div>
+            @else
+                <p class="font-semibold text-sm">No actions available.</p>
+            @endif
         @endscope
     </x-mary-table>
 </div>

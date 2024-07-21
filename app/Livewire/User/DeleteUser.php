@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire;
+namespace App\Livewire\User;
 
 use App\Models\User;
 use Livewire\Attributes\On;
@@ -11,7 +11,7 @@ class DeleteUser extends Component
 {
     use Toast;
 
-    public int|null $user;
+    public $user;
 
     public bool $deleteUserModal = false;
 
@@ -21,9 +21,9 @@ class DeleteUser extends Component
     }
 
     #[On('openDeleteUserModal')]
-    public function openDeleteUserModal(int $user)
+    public function openDeleteUserModal(int $userId)
     {
-        $this->user = $user;
+        $this->user = $userId;
         $this->deleteUserModal = true;
     }
 

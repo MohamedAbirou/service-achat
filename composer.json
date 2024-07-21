@@ -12,8 +12,9 @@
         "laravel/tinker": "^2.9",
         "livewire/livewire": "^3.5",
         "livewire/volt": "^1.6",
-        "power-components/livewire-powergrid": "^5.9",
-        "robsontenorio/mary": "^1.34"
+        "morilog/jalali": "^3.4",
+        "robsontenorio/mary": "^1.34",
+        "wireui/heroicons": "^2.6"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",

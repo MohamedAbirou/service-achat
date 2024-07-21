@@ -7,14 +7,11 @@
     <x-mary-form wire:submit="update">
         <div class="flex items-center space-x-5">
             <div class="w-full">
-                <x-label
-                    for="first_name"
-                    value="{{ __('First Name') }}"
-                />
                 <x-mary-input
                     id="first_name"
                     class="block mt-1 w-full"
                     type="text"
+                    label="First Name"
                     name="first_name"
                     wire:model.defer="first_name"
                     required
@@ -24,14 +21,11 @@
             </div>
 
             <div class="w-full">
-                <x-label
-                    for="last_name"
-                    value="{{ __('Last Name') }}"
-                />
                 <x-mary-input
                     id="last_name"
                     class="block mt-1 w-full"
                     type="text"
+                    label="Last Name"
                     name="last_name"
                     wire:model.defer="last_name"
                     required
@@ -42,14 +36,11 @@
         </div>
 
         <div>
-            <x-label
-                for="email"
-                value="{{ __('Email') }}"
-            />
             <x-mary-input
                 id="email"
                 class="block mt-1 w-full"
                 type="email"
+                label="Email"
                 name="email"
                 wire:model.defer="email"
                 required

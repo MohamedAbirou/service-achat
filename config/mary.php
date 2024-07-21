@@ -17,6 +17,7 @@ return [
      */
     'prefix' => 'mary-',
 
+
     /**
      * Default route prefix.
      *

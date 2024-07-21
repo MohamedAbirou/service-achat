@@ -27,6 +27,11 @@ class ProductIndex extends Component
 
     public string $query = '';
 
+    public function mount()
+    {
+        $this->authorize('manage-products');
+    }
+
     public function render()
     {
         $products = Product::latest()
@@ -34,7 +39,10 @@ class ProductIndex extends Component
         ->orWhereRelation('category', 'name', 'like', '%' . $value . '%'))
         ->orderBy(...array_values($this->sortBy))->paginate(10);
 
-        return view('livewire.product-index', compact('products'));
+        return view('livewire.product-index', [
+            'products' => $products,
+            'filters' => $this->filters,
+        ]);
     }
 
     public function openCreateProductModal()
@@ -57,12 +65,8 @@ class ProductIndex extends Component
         return Product::where('category_id', $categoryId)->first()->category->name ?? 'N/A';
     }
 
-    public function getInStockLabel($inStock)
-    {
-        return $inStock ? '<span class="text-green-500">In Stock</span>' : '<span class="text-red-500">Out of Stock</span>';
-    }
 
     public function search() {
-        $this->render();
+        $this->resetPage();
     }
 }
