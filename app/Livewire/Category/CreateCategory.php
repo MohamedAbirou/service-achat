@@ -21,7 +21,7 @@ class CreateCategory extends Component
 
     public function render()
     {
-        return view('livewire.create-category');
+        return view('livewire.category.create-category');
     }
 
     #[On('openCreateCategoryModal')]

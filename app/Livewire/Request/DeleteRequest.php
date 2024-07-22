@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire;
+namespace App\Livewire\Request;
 
 use App\Models\Request;
 use Livewire\Attributes\On;
@@ -16,7 +16,7 @@ class DeleteRequest extends Component
 
     public function render()
     {
-        return view('livewire.delete-request');
+        return view('livewire.request.delete-request');
     }
 
     #[On('openDeleteRequestModal')]

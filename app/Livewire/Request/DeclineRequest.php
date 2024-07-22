@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire;
+namespace App\Livewire\Request;
 
 use App\Models\Request;
 use App\Notifications\RequestDeclined;
@@ -17,7 +17,7 @@ class DeclineRequest extends Component
 
     public function render()
     {
-        return view('livewire.decline-request');
+        return view('livewire.request.decline-request');
     }
 
     #[On('openDeclineRequestModal')]

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire;
+namespace App\Livewire\Request;
 
 use App\Models\Product;
 use App\Models\Request;
@@ -32,7 +32,7 @@ class CreateRequest extends Component
     public function render()
     {
         $products = Product::where('in_stock', true)->get();
-         return view('livewire.create-request', compact('products'));
+         return view('livewire.request.create-request', compact('products'));
     }
 
     #[On('openCreateRequestModal')]

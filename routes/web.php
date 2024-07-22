@@ -1,11 +1,12 @@
 <?php
 
 use App\Livewire\Category\CategoryIndex;
-use App\Livewire\ProductIndex;
-use App\Livewire\RequestIndex;
-use App\Livewire\SingleProduct;
-use App\Livewire\SingleRequest;
+use App\Livewire\Product\ProductIndex;
+use App\Livewire\Request\RequestIndex;
+use App\Livewire\Product\SingleProduct;
+use App\Livewire\Request\SingleRequest;
 use App\Livewire\User\UserIndex;
+use App\Livewire\UserProfile;
 use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
 
@@ -24,6 +25,9 @@ Route::middleware([
 
     // Users
     Route::get('/users', UserIndex::class)->name('users');
+
+    // Single user
+    Route::get('/users/{userId}', UserProfile::class)->name('user-profile');
 
     // Products
     Route::get('/products', ProductIndex::class)->name('products');

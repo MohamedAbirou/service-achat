@@ -12,11 +12,11 @@ class UserIndex extends Component
 
     public array $headers = [
         ['key' => 'id', 'label' => '#'],
-        ['key' => 'first_name', 'label' => 'First Name'],
-        ['key' => 'last_name', 'label' => 'Last Name'],
+        ['key' => 'first_name', 'label' => 'Full Name'],
         ['key' => 'email', 'label' => 'Email', 'sortable' => false],
         ['key' => 'department', 'label' => 'Department', 'sortable' => false],
         ['key' => 'role', 'label' => 'Role', 'sortable' => false],
+        ['key' => 'created_at', 'label' => 'Created At'],
         ['key' => 'actions', 'label' => 'Actions', 'sortable' => false],
     ];
 
@@ -44,7 +44,7 @@ class UserIndex extends Component
         ->when(count($this->filters['department']) > 0, fn ($query) => $query->whereIn('department', $this->filters['department']))
         ->orderBy(...array_values($this->sortBy))->paginate(10);
 
-        return view('livewire.user-index', [
+        return view('livewire.user.user-index', [
             'users' => $users,
             'departments' => $this->departments,
         ]);

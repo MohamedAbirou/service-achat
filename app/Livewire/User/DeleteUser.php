@@ -3,6 +3,7 @@
 namespace App\Livewire\User;
 
 use App\Models\User;
+use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\On;
 use Livewire\Component;
 use Mary\Traits\Toast;
@@ -17,7 +18,7 @@ class DeleteUser extends Component
 
     public function render()
     {
-        return view('livewire.delete-user');
+        return view('livewire.user.delete-user');
     }
 
     #[On('openDeleteUserModal')]

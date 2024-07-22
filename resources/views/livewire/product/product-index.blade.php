@@ -1,8 +1,8 @@
 <div>
     {{-- Import the manage product components --}}
-    <livewire:create-product @created="$refresh" />
-    <livewire:update-product @saved="$refresh" />
-    <livewire:delete-product @deleted="$refresh" />
+    <livewire:product.create-product @created="$refresh" />
+    <livewire:product.update-product @saved="$refresh" />
+    <livewire:product.delete-product @deleted="$refresh" />
 
     <x-mary-header
         title="Products"

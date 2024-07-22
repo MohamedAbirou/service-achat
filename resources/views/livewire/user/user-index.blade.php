@@ -1,8 +1,8 @@
 <div>
     {{-- Import the create-user component --}}
-    <livewire:create-user @created="$refresh" />
-    <livewire:update-user @saved="$refresh" />
-    <livewire:delete-user @deleted="$refresh" />
+    <livewire:user.create-user @created="$refresh" />
+    <livewire:user.update-user @saved="$refresh" />
+    <livewire:user.delete-user @deleted="$refresh" />
 
     <x-mary-header
         title="Users"
@@ -56,6 +56,21 @@
         :sort-by="$sortBy"
         with-pagination
     >
+
+        {{-- Special `first_name` slot --}}
+        @scope('cell_first_name', $user)
+            <a
+                href="{{ route('user-profile', $user->id) }}"
+                class="flex flex-col hover:underline"
+            >
+                <p class="text-sm font-medium text-gray-900">{{ $user->first_name }}</p>
+                <p class="text-sm text-gray-500">{{ $user->last_name }}</p>
+            </a>
+        @endscope
+
+        @scope('cell_department', $user)
+            {{ $user->department ?? 'Unknown' }}
+        @endscope
 
         {{-- Special `role` slot --}}
         @scope('cell_role', $user)

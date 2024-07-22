@@ -1,10 +1,8 @@
 <?php
 
-namespace App\Livewire;
+namespace App\Livewire\Request;
 
 use App\Models\Request;
-use App\Notifications\RequestApproved;
-use App\Notifications\RequestDeclined;
 use Livewire\Component;
 use Mary\Traits\Toast;
 
@@ -31,6 +29,6 @@ class SingleRequest extends Component
 
     public function render()
     {
-        return view('livewire.single-request', ['request' => $this->request]);
+        return view('livewire.request.single-request', ['request' => $this->request]);
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire;
+namespace App\Livewire\Request;
 
 use App\Models\Product;
 use App\Models\Request;
@@ -65,7 +65,7 @@ class UpdateRequest extends Component
     public function render()
     {
         $products = Product::all();
-        return view('livewire.update-request', [
+        return view('livewire.request.update-request', [
             'products' => $products
         ]);
     }

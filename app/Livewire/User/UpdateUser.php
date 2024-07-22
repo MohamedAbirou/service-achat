@@ -3,6 +3,7 @@
 namespace App\Livewire\User;
 
 use App\Models\User;
+use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\On;
 use Livewire\Component;
 use Mary\Traits\Toast;
@@ -52,6 +53,6 @@ class UpdateUser extends Component
 
     public function render()
     {
-        return view('livewire.update-user');
+        return view('livewire.user.update-user');
     }
 }

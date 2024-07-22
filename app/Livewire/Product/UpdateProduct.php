@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire;
+namespace App\Livewire\Product;
 
 use App\Models\Category;
 use App\Models\Product;
@@ -76,6 +76,6 @@ class UpdateProduct extends Component
     {
         // Get all categories
         $categories = Category::all();
-        return view('livewire.update-product', compact('categories'));
+        return view('livewire.product.update-product', compact('categories'));
     }
 }

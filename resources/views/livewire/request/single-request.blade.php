@@ -1,6 +1,6 @@
 <div>
-    <livewire:approve-request @approved="$refresh" />
-    <livewire:decline-request @declined="$refresh" />
+    <livewire:request.approve-request @approved="$refresh" />
+    <livewire:request.decline-request @declined="$refresh" />
 
     <h1 class="tex-2xl font-bold">Request Details</h1>
 

@@ -32,7 +32,7 @@ class CategoryIndex extends Component
         ->when($this->query, fn ($query, $value) => $query->where('name', 'like', '%' . $value . '%'))
         ->orderBy(...array_values($this->sortBy))->paginate(10);
 
-        return view('livewire.category-index', compact('categories'));
+        return view('livewire.category.category-index', compact('categories'));
     }
 
     public function openCreateCategoryModal()

@@ -1,10 +1,10 @@
 <div>
     {{-- Import the create-request component --}}
-    <livewire:create-request @created="$refresh" />
-    <livewire:update-request @saved="$refresh" />
-    <livewire:delete-request @deleted="$refresh" />
-    <livewire:approve-request @approved="$refresh" />
-    <livewire:decline-request @declined="$refresh" />
+    <livewire:request.create-request @created="$refresh" />
+    <livewire:request.update-request @saved="$refresh" />
+    <livewire:request.delete-request @deleted="$refresh" />
+    <livewire:request.approve-request @approved="$refresh" />
+    <livewire:request.decline-request @declined="$refresh" />
 
     <x-mary-header
         title="Requests"

@@ -5,6 +5,7 @@
 >
 
     <x-mary-form wire:submit="update">
+
         <div class="flex items-center space-x-5">
             <div class="w-full">
                 <x-mary-input

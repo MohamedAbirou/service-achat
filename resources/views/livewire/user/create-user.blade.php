@@ -7,6 +7,7 @@
         </x-slot:title>
 
         <x-mary-form wire:submit="save">
+
             <div class="flex items-center space-x-5">
                 <div class="w-full">
                     <x-mary-input

@@ -44,6 +44,6 @@ class UpdateCategory extends Component
 
     public function render()
     {
-        return view('livewire.update-category');
+        return view('livewire.category.update-category');
     }
 }

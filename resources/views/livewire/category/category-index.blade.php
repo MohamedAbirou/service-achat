@@ -1,8 +1,8 @@
 <div>
     {{-- Import the create-category component --}}
-    <livewire:create-category @created="$refresh" />
-    <livewire:update-category @saved="$refresh" />
-    <livewire:delete-category @deleted="$refresh" />
+    <livewire:category.create-category @created="$refresh" />
+    <livewire:category.update-category @saved="$refresh" />
+    <livewire:category.delete-category @deleted="$refresh" />
 
     <x-mary-header
         title="Categories"

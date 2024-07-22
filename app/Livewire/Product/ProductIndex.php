@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire;
+namespace App\Livewire\Product;
 
 use App\Models\Product;
 use Livewire\Component;
@@ -67,7 +67,7 @@ class ProductIndex extends Component
             ->orderBy($this->sortBy['column'], $this->sortBy['direction'])
             ->paginate(10);
 
-        return view('livewire.product-index', [
+        return view('livewire.product.product-index', [
             'products' => $products,
             'filters' => $this->filters,
         ]);

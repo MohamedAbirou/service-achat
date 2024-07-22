@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire;
+namespace App\Livewire\Request;
 
 use App\Models\Request;
 use App\Notifications\RequestApproved;
@@ -17,7 +17,7 @@ class ApproveRequest extends Component
 
     public function render()
     {
-        return view('livewire.approve-request');
+        return view('livewire.request.approve-request');
     }
 
     #[On('openApproveRequestModal')]

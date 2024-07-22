@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire;
+namespace App\Livewire\Request;
 
 use App\Models\Request;
 use Illuminate\Support\Facades\Auth;
@@ -88,7 +88,7 @@ class RequestIndex extends Component
             ->orderBy($this->sortBy['column'], $this->sortBy['direction'])
             ->paginate(10);
 
-        return view('livewire.request-index', [
+        return view('livewire.request.request-index', [
             'requests' => $requests,
             'requestFilters' => $this->requestFilters,
         ]);
