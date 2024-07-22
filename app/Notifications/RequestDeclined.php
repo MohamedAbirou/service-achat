@@ -51,8 +51,8 @@ class RequestDeclined extends Notification
     {
         return [
             'message' => "Your request has been declined",
-            'status' => $this->request->status,
             'request_id' => $this->request->id,
+            'status' => $this->request->status,
         ];
     }
 }

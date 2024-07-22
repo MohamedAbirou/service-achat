@@ -18,6 +18,7 @@
                 placeholder="Search..."
                 wire:model="query"
                 class="w-full"
+                wire:keydown.enter="search"
             />
         </x-slot:middle>
         <x-slot:actions>
@@ -27,12 +28,13 @@
                 spinner="search"
             >Search</x-mary-button>
             <x-mary-dropdown icon="o-funnel">
-                @foreach ($filters as $filter)
+                @foreach ($filters as $filter => $isActive)
                     <x-mary-menu-item wire:key="{{ $filter }}">
                         <x-mary-checkbox
-                            label="{{ $filter }}"
-                            value="{{ $filter }}"
-                            id="{{ $filter }}"
+                            label="{{ Str::title(str_replace('_', ' ', $filter)) }}"
+                            wire:model.live="filters.{{ $filter }}"
+                            id="filters[]"
+                            :checked="$isActive"
                         />
                     </x-mary-menu-item>
                 @endforeach

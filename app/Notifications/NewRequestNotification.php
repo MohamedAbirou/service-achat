@@ -51,15 +51,11 @@ class NewRequestNotification extends Notification
      */
     public function toArray(object $notifiable): array
     {
-        $data = [
+        return [
             'message' => "New request created by {$this->request->user->first_name}",
             'request_id' => $this->request->id,
-            'created_at' => $this->request->created_at->diffForHumans(),
             'request_user_name' => $this->request->user->first_name,
+            'status' => $this->request->status,
         ];
-
-        Log::info('Notification Data: ', $data); // Log the notification data
-
-        return $data;
     }
 }

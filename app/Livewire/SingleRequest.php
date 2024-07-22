@@ -6,9 +6,12 @@ use App\Models\Request;
 use App\Notifications\RequestApproved;
 use App\Notifications\RequestDeclined;
 use Livewire\Component;
+use Mary\Traits\Toast;
 
 class SingleRequest extends Component
 {
+    use Toast;
+
     public $request;
 
     public function mount($requestId)
@@ -16,35 +19,14 @@ class SingleRequest extends Component
         $this->request = Request::findOrFail($requestId);
     }
 
-
-    public function approveRequest()
+    public function openApproveRequestModal(Request $request)
     {
-        $this->authorize('approve-requests');
-
-        $this->request->update(['status' => 'approved']);
-
-        $this->request->user->notify(new RequestApproved($this->request));
-
-        try{
-            $this->success('Request approved!');
-        } catch (\Exception $e) {
-            $this->error('Error approving the request!');
-        }
+        $this->dispatch('openApproveRequestModal', $request->id);
     }
 
-    public function declineRequest()
+    public function openDeclineRequestModal(Request $request)
     {
-        $this->authorize('approve-requests');
-
-        $this->request->update(['status' => 'declined']);
-
-        $this->request->user->notify(new RequestDeclined($this->request));
-
-        try {
-            $this->success('Request declined!');
-        } catch (\Exception $e) {
-            $this->error('Error declining the request!');
-        }
+        $this->dispatch('openDeclineRequestModal', $request->id);
     }
 
     public function render()

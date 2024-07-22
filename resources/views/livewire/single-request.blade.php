@@ -1,37 +1,39 @@
 <div>
+    <livewire:approve-request @approved="$refresh" />
+    <livewire:decline-request @declined="$refresh" />
 
-    <h1>Request Details</h1>
+    <h1 class="tex-2xl font-bold">Request Details</h1>
 
-    <div>
+    <div class="mt-4">
         <strong>Title:</strong> {{ $request->title }}
     </div>
-    <div>
+    <div class="mt-4">
         <strong>Description:</strong> {{ $request->description }}
     </div>
-    <div>
+    <div class="mt-4">
         <strong>Quantity:</strong> {{ $request->quantity }}
     </div>
-    <div>
+    <div class="mt-4">
         <strong>Budget:</strong> {{ $request->budget }}
     </div>
-    <div>
+    <div class="mt-4">
         <strong>Status:</strong>
         <x-mary-badge
-            class="pb-0.5 text-white font-semibold
+            class="pb-0.5 text-white font-semibold lowercase
    {{ $request->status == 'approved' ? 'bg-emerald-500' : ($request->status == 'pending' ? 'bg-amber-500' : 'bg-rose-600') }}"
             value="{{ ucfirst($request->status) }}"
         />
     </div>
-    <div>
+    <div class="mt-4">
         <strong>Department:</strong> {{ $request->department }}
     </div>
-    <div>
+    <div class="mt-4">
         <strong>Product:</strong> <a
             href="/products/{{ $request->product_id }}"
             class="text-blue-600 hover:underline"
         >{{ $request->product->name ?? 'N/A' }}</a>
     </div>
-    <div>
+    <div class="mt-4">
         <strong>User:</strong> {{ $request->user->first_name }} {{ $request->user->last_name }}
     </div>
 
@@ -39,30 +41,30 @@
         @if ($request->status == 'pending')
             <div class="mt-4">
                 <x-mary-button
-                    wire:click="approveRequest"
                     class="btn btn-success text-white"
-                    spinner="approveRequest"
+                    wire:click="openApproveRequestModal({{ $request->id }})"
+                    spinner="openApproveRequestModal({{ $request->id }})"
                 >Approve</x-mary-button>
                 <x-mary-button
-                    wire:click="declineRequest"
                     class="btn bg-red-500 text-white hover:bg-red-600"
-                    spinner="declineRequest"
+                    wire:click="openDeclineRequestModal({{ $request->id }})"
+                    spinner="openDeclineRequestModal({{ $request->id }})"
                 >Decline</x-mary-button>
             </div>
         @elseif ($request->status == 'approved')
             <div class="mt-4">
                 <x-mary-button
-                    wire:click="declineRequest"
                     class="btn bg-red-500 text-white hover:bg-red-600"
-                    spinner="declineRequest"
+                    wire:click="openDeclineRequestModal({{ $request->id }})"
+                    spinner="openDeclineRequestModal({{ $request->id }})"
                 >Decline</x-mary-button>
             </div>
         @else
             <div class="mt-4">
                 <x-mary-button
-                    wire:click="approveRequest"
                     class="btn btn-success text-white"
-                    spinner="approveRequest"
+                    wire:click="openApproveRequestModal({{ $request->id }})"
+                    spinner="openApproveRequestModal({{ $request->id }})"
                 >Approve</x-mary-button>
             </div>
         @endif

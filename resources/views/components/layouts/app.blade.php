@@ -51,12 +51,15 @@
 
         {{-- Right side actions --}}
         <x-slot:actions>
-            <x-mary-button
+            {{-- <x-mary-button
                 tooltip-left="switch-theme"
                 class="btn-circle"
-            >
-                <x-mary-theme-toggle />
-            </x-mary-button>
+            > --}}
+            <x-mary-theme-toggle
+                tooltip-left="switch-theme"
+                class="bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-900 p-3.5 rounded-full"
+            />
+            {{-- </x-mary-button> --}}
             <x-mary-button
                 icon="o-power"
                 class="btn-circle"
@@ -91,7 +94,7 @@
                         <x-mary-menu-item
                             title="{{ $notification->data['message'] }}"
                             link="{{ route('single-request', $notification->data['request_id']) }}"
-                            class="text-white hover:text-white {{ $notification->data['status'] == 'approved' ? 'bg-emerald-500 hover:bg-emerald-600' : ($notification->data['status'] == 'pending' ? 'bg-amber-500 hover:bg-amber-600' : 'bg-rose-600 hover:bg-rose-700') }}"
+                            class="text-white hover:text-white {{ $notification->data['status'] == 'approved' ? 'text-emerald-500 hover:text-emerald-500 bg-gray-50' : ($notification->data['status'] == 'pending' ? 'text-amber-500 hover:text-amber-500 bg-gray-50' : 'text-rose-600 hover:text-rose-600 bg-gray-50') }}"
                             responsive
                         />
                     @endforeach

@@ -59,7 +59,7 @@ class DatabaseSeeder extends Seeder
 
         // Product::factory(50)->create();
 
-        // // Give existed users who are managers and employees a department
+        // Give existed users who are managers and employees a department
         // $departments = ['Marketing', 'Sales', 'Finance', 'Human Resources', 'IT', 'Accounting', 'Support', 'Customer Service', 'Operations', 'Legal'];
 
         // User::where('role', User::ROLE_MANAGER)->each(fn($user) => $user->update(['department' => Arr::random($departments)]));

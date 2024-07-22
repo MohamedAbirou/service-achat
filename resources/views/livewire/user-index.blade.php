@@ -18,6 +18,7 @@
                 placeholder="Search..."
                 wire:model="query"
                 class="w-full"
+                wire:keydown.enter="search"
             />
         </x-slot:middle>
         <x-slot:actions>
@@ -31,8 +32,11 @@
                     <x-mary-menu-item wire:key="{{ $department }}">
                         <x-mary-checkbox
                             label="{{ $department }}"
-                            value="{{ $department }}"
+                            id="{{ $department }}"
+                            :checked="in_array($department, $filters['department'])"
+                            wire:click="updateDepartmentFilter('{{ $department }}')"
                         />
+
                     </x-mary-menu-item>
                 @endforeach
             </x-mary-dropdown>

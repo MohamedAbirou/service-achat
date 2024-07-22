@@ -3,6 +3,8 @@
     <livewire:create-request @created="$refresh" />
     <livewire:update-request @saved="$refresh" />
     <livewire:delete-request @deleted="$refresh" />
+    <livewire:approve-request @approved="$refresh" />
+    <livewire:decline-request @declined="$refresh" />
 
     <x-mary-header
         title="Requests"
@@ -18,6 +20,7 @@
                 placeholder="Search..."
                 wire:model="query"
                 class="w-full"
+                wire:keydown.enter="search"
             />
         </x-slot:middle>
         <x-slot:actions>
@@ -27,6 +30,16 @@
                 spinner="search"
             >Search</x-mary-button>
             <x-mary-dropdown icon="o-funnel">
+                @foreach ($requestFilters as $filter => $isActive)
+                    <x-mary-menu-item wire:key="{{ $filter }}">
+                        <x-mary-checkbox
+                            label="{{ Str::title(str_replace('_', ' ', $filter)) }}"
+                            wire:model.live="requestFilters.{{ $filter }}"
+                            id="requestFilters[]"
+                            :checked="$isActive"
+                        />
+                    </x-mary-menu-item>
+                @endforeach
             </x-mary-dropdown>
             <x-mary-button
                 icon="o-plus"
@@ -41,6 +54,7 @@
         :headers="$headers"
         :rows="$requests"
         striped
+        :sort-by="$sortBy"
         with-pagination
     >
 
@@ -58,11 +72,16 @@
         @scope('cell_status', $request)
             <div class="flex items-center space-x-2 justify-start w-fit">
                 <x-mary-badge
-                    class="pb-0.5 text-white font-semibold
+                    class="text-white font-semibold lowercase pb-0.5
    {{ $request->status == 'approved' ? 'bg-emerald-500' : ($request->status == 'pending' ? 'bg-amber-500' : 'bg-rose-600') }}"
                     value="{{ ucfirst($request->status) }}"
                 />
             </div>
+        @endscope
+
+        {{-- Department --}}
+        @scope('cell_department', $request)
+            {{ $request->department ?? 'Unknown' }}
         @endscope
 
         {{-- Product name --}}
@@ -113,14 +132,14 @@
                             auth()->user()->role === \App\Models\User::ROLE_ADMIN)
                         <x-mary-button
                             icon="o-check"
-                            wire:click="approveRequest({{ $request->id }})"
-                            spinner="approveRequest({{ $request->id }})"
+                            wire:click="openApproveRequestModal({{ $request->id }})"
+                            spinner="openApproveRequestModal({{ $request->id }})"
                             class="btn-sm bg-green-500 text-white hover:bg-green-600"
                         />
                         <x-mary-button
                             icon="o-x-circle"
-                            wire:click="declineRequest({{ $request->id }})"
-                            spinner="declineRequest({{ $request->id }})"
+                            wire:click="openDeclineRequestModal({{ $request->id }})"
+                            spinner="openDeclineRequestModal({{ $request->id }})"
                             class="btn-sm bg-gray-800 text-white hover:bg-gray-900"
                         />
                     @endif

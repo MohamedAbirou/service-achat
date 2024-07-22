@@ -18,6 +18,7 @@
                 placeholder="Search..."
                 wire:model="query"
                 class="w-full"
+                wire:keydown.enter="search"
             />
         </x-slot:middle>
         <x-slot:actions>

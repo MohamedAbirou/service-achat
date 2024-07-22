@@ -111,7 +111,6 @@
                 @elseif ($showingConfirmation)
                     <x-confirms-password wire:then="confirmTwoFactorAuthentication">
                         <x-button
-                            type="button"
                             class="me-3"
                             wire:loading.attr="disabled"
                         >

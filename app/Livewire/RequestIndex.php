@@ -3,8 +3,6 @@
 namespace App\Livewire;
 
 use App\Models\Request;
-use App\Notifications\RequestApproved;
-use App\Notifications\RequestDeclined;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -19,13 +17,25 @@ class RequestIndex extends Component
         ['key' => 'title', 'label' => 'Title'],
         ['key' => 'quantity', 'label' => 'Quantity'],
         ['key' => 'budget', 'label' => 'Budget'],
-        ['key' => 'status', 'label' => 'Status'],
-        ['key' => 'department', 'label' => 'Department'],
-        ['key' => 'product_id', 'label' => 'Product'],
-        ['key' => 'user_id', 'label' => 'User'],
-        ['key' => 'created_at', 'label' => 'Created At'],
-        ['key' => 'updated_at', 'label' => 'Updated At'],
-        ['key' => 'actions', 'label' => 'Actions'],
+        ['key' => 'status', 'label' => 'Status', 'sortable' => false],
+        ['key' => 'department', 'label' => 'Department', 'sortable' => false],
+        ['key' => 'product_id', 'label' => 'Product', 'sortable' => false],
+        ['key' => 'user_id', 'label' => 'User', 'sortable' => false],
+        ['key' => 'created_at', 'label' => 'Created At', 'sortable' => false],
+        ['key' => 'updated_at', 'label' => 'Updated At', 'sortable' => false],
+        ['key' => 'actions', 'label' => 'Actions', 'sortable' => false],
+    ];
+
+    public array $sortBy = ['column' => 'id', 'direction' => 'asc'];
+
+    public array $requestFilters = [
+        'low_to_high' => false,
+        'high_to_low' => false,
+        'approved' => false,
+        'pending' => false,
+        'declined' => false,
+        'latest' => false,
+        'oldest' => false,
     ];
 
     public $query = '';
@@ -34,61 +44,54 @@ class RequestIndex extends Component
     {
         $user = Auth::user();
 
-        $requests = Request::latest()
-        ->when($user->role === 'employee', function ($query) use ($user) {
-            // Employees can only see their own requests
-            $query->where('user_id', $user->id);
-        })
-        ->when($user->role === 'manager', function ($query) use ($user) {
-            // Managers can see requests from their department
-            $query->whereHas('user', function ($q) use ($user) {
-                $q->where('department', $user->department);
-            });
-        })
-        ->when($user->role === 'admin', function ($query) use ($user) {
-            // Admins can see all requests
-            // No additional conditions needed
-        })
-        ->when($this->query, fn ($query, $value) => $query
-        ->where(function ($query) use ($value) {
-            $query->where('title', 'like', '%' . $value . '%')
-                ->orWhere('description', 'like', '%' . $value . '%');
-        }))
-        ->paginate(10);
+        $requests = Request::query()
+            ->when($user->role === 'employee', function ($query) use ($user) {
+                // Employees can only see their own requests
+                $query->where('user_id', $user->id);
+            })
+            ->when($user->role === 'manager', function ($query) use ($user) {
+                // Managers can see requests from their department
+                $query->whereHas('user', function ($q) use ($user) {
+                    $q->where('department', $user->department);
+                });
+            })
+            ->when($this->query, function ($query, $value) {
+                $query->where(function ($q) use ($value) {
+                    $q->where('title', 'like', '%' . $value . '%')
+                        ->orWhereRelation('user', 'first_name', 'like', '%' . $value . '%')
+                        ->orWhereRelation('user', 'last_name', 'like', '%' . $value . '%')
+                        ->orWhereRelation('user', 'department', 'like', '%' . $value . '%')
+                        ->orWhereRelation('product', 'name', 'like', '%' . $value . '%');
+                });
+            })
+            ->when($this->requestFilters['low_to_high'], function ($query) {
+                $query->orderBy('budget', 'asc');
+            })
+            ->when($this->requestFilters['high_to_low'], function ($query) {
+                $query->orderBy('budget', 'desc');
+            })
+            ->when($this->requestFilters['approved'], function ($query) {
+                $query->where('status', 'approved');
+            })
+            ->when($this->requestFilters['pending'], function ($query) {
+                $query->where('status', 'pending');
+            })
+            ->when($this->requestFilters['declined'], function ($query) {
+                $query->where('status', 'declined');
+            })
+            ->when($this->requestFilters['latest'], function ($query) {
+                $query->orderBy('created_at', 'desc');
+            })
+            ->when($this->requestFilters['oldest'], function ($query) {
+                $query->orderBy('created_at', 'asc');
+            })
+            ->orderBy($this->sortBy['column'], $this->sortBy['direction'])
+            ->paginate(10);
 
-        return view('livewire.request-index', compact('requests'));
-    }
-
-    public function approveRequest($requestId)
-    {
-        $request = Request::findOr($requestId);
-        $this->authorize('approve-requests');
-
-        $request->update(['status' => 'approved']);
-
-        $request->user->notify(new RequestApproved($request));
-
-        try{
-            $this->success('Request approved!');
-        } catch (\Exception $e) {
-            $this->error('Error approving the request!');
-        }
-    }
-
-    public function declineRequest($requestId)
-    {
-        $request = Request::findOr($requestId);
-        $this->authorize('approve-requests');
-
-        $request->update(['status' => 'declined']);
-
-        $request->user->notify(new RequestDeclined($request));
-
-        try {
-            $this->success('Request declined!');
-        } catch (\Exception $e) {
-            $this->error('Error declining the request!');
-        }
+        return view('livewire.request-index', [
+            'requests' => $requests,
+            'requestFilters' => $this->requestFilters,
+        ]);
     }
 
     public function openCreateRequestModal()
@@ -104,6 +107,16 @@ class RequestIndex extends Component
     public function openDeleteRequestModal(Request $request)
     {
         $this->dispatch('openDeleteRequestModal', $request->id);
+    }
+
+    public function openApproveRequestModal(Request $request)
+    {
+        $this->dispatch('openApproveRequestModal', $request->id);
+    }
+
+    public function openDeclineRequestModal(Request $request)
+    {
+        $this->dispatch('openDeclineRequestModal', $request->id);
     }
 
     public function getProductName($productId)

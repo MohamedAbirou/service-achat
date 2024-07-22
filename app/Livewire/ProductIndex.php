@@ -17,13 +17,20 @@ class ProductIndex extends Component
         ['key' => 'price', 'label' => 'Price'],
         ['key' => 'category_id', 'label' => 'Category', 'sortable' => false],
         ['key' => 'in_stock', 'label' => 'In Stock', 'sortable' => false],
-        ['key' => 'created_at', 'label' => 'created At'],
+        ['key' => 'created_at', 'label' => 'Created At', 'sortable' => false],
         ['key' => 'actions', 'label' => 'Actions', 'sortable' => false],
     ];
 
     public array $sortBy = ['column' => 'id', 'direction' => 'asc'];
 
-    public array $filters = ['Low to High', 'High to Low', 'In Stock', 'Out Of Stock', 'Latest', 'Oldest'];
+    public array $filters = [
+        'low_to_high' => false,
+        'high_to_low' => false,
+        'in_stock' => false,
+        'out_of_stock' => false,
+        'latest' => false,
+        'oldest' => false,
+    ];
 
     public string $query = '';
 
@@ -34,10 +41,31 @@ class ProductIndex extends Component
 
     public function render()
     {
-        $products = Product::latest()
-        ->when($this->query, fn ($query, $value) => $query->where('name', 'like', '%' . $value . '%')
-        ->orWhereRelation('category', 'name', 'like', '%' . $value . '%'))
-        ->orderBy(...array_values($this->sortBy))->paginate(10);
+        $products = Product::query()
+            ->when($this->query, function ($query) {
+                $query->where('name', 'like', '%' . $this->query . '%')
+                    ->orWhereRelation('category', 'name', 'like', '%' . $this->query . '%');
+            })
+            ->when($this->filters['low_to_high'], function ($query) {
+                $query->orderBy('price', 'asc');
+            })
+            ->when($this->filters['high_to_low'], function ($query) {
+                $query->orderBy('price', 'desc');
+            })
+            ->when($this->filters['in_stock'], function ($query) {
+                $query->where('in_stock', true);
+            })
+            ->when($this->filters['out_of_stock'], function ($query) {
+                $query->where('in_stock', false);
+            })
+            ->when($this->filters['latest'], function ($query) {
+                $query->orderBy('created_at', 'desc');
+            })
+            ->when($this->filters['oldest'], function ($query) {
+                $query->orderBy('created_at', 'asc');
+            })
+            ->orderBy($this->sortBy['column'], $this->sortBy['direction'])
+            ->paginate(10);
 
         return view('livewire.product-index', [
             'products' => $products,
@@ -65,8 +93,8 @@ class ProductIndex extends Component
         return Product::where('category_id', $categoryId)->first()->category->name ?? 'N/A';
     }
 
-
-    public function search() {
+    public function search()
+    {
         $this->resetPage();
     }
 }
