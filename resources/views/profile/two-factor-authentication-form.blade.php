@@ -110,12 +110,13 @@
                     </x-confirms-password>
                 @elseif ($showingConfirmation)
                     <x-confirms-password wire:then="confirmTwoFactorAuthentication">
-                        <x-button
+                        <x-mary-button
+                            type="button"
                             class="me-3"
                             wire:loading.attr="disabled"
                         >
                             {{ __('Confirm') }}
-                        </x-button>
+                        </x-mary-button>
                     </x-confirms-password>
                 @else
                     <x-confirms-password wire:then="showRecoveryCodes">

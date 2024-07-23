@@ -21,7 +21,8 @@ class UpdateProduct extends Component
     public float $price = 0.0;
 
     // UploadedFile or string
-    public UploadedFile|string|null $image = null;
+    public ?UploadedFile $image = null;
+    public ?string $imageUrl = null;
 
     public ?int $category_id = null;
 
@@ -29,13 +30,17 @@ class UpdateProduct extends Component
 
     public bool $updateProductModal = false;
 
-    protected $rules = [
-        'name' => 'required|string|max:155',
-        'price' => 'required|numeric|min:0',
-        'image' => 'required|image|max:1024',
-        'category_id' => 'required|exists:categories,id',
-        'in_stock' => 'required|boolean',
-    ];
+    public function rules()
+    {
+        return [
+            'name' => 'required|string|max:155',
+            'price' => 'required|numeric|min:0',
+            'image' => 'nullable|image|max:1024',
+            'category_id' => 'required|exists:categories,id',
+            'in_stock' => 'required|boolean',
+        ];
+    }
+
 
     #[On('openUpdateProductModal')]
     public function openUpdateProductModal(Product $product)
@@ -43,7 +48,11 @@ class UpdateProduct extends Component
         $this->product = $product;
         $this->name = $product->name;
         $this->price = $product->price;
-        $this->image = $product->image ? Storage::url($product->image) : null;
+
+        if ($product->image) {
+            $this->imageUrl = Storage::url($product->image);
+        }
+
         $this->category_id = $product->category_id;
         $this->in_stock = $product->in_stock;
         $this->updateProductModal = true;
@@ -53,15 +62,15 @@ class UpdateProduct extends Component
     {
         $this->validate();
 
-        $imageName = time() . '.' . $this->image->extension();
-
-        // Store the image in the public/products directory
-        $imagePath = $this->image->storePubliclyAs('products', $imageName, 'public');
+        if ($this->image instanceof UploadedFile) {
+            // Store the image in the public/products directory
+            $imagePath = $this->image->storePublicly('products', 'public');
+        }
 
         $this->product->update([
-            'name'=> $this->name,
+            'name' => $this->name,
             'price' => $this->price,
-            'image' => $imagePath,
+            'image' => $imagePath ?? $this->product->image,
             'category_id' => $this->category_id,
             'in_stock' => $this->in_stock,
         ]);
@@ -71,6 +80,7 @@ class UpdateProduct extends Component
 
         $this->success('Product updated successfully');
     }
+
 
     public function render()
     {

@@ -86,12 +86,22 @@
 
         {{-- Product name --}}
         @scope('cell_product_id', $request)
-            {{ $this->getProductName($request->product_id) }}
+            <a
+                href="{{ route('single-product', $request->product_id) }}"
+                class="text-gray-800 hover:underline"
+            >
+                {{ $this->getProductName($request->product_id) }}
+            </a>
         @endscope
 
         {{-- User name --}}
         @scope('cell_user_id', $request)
-            {{ $this->getUserName($request->user_id) }}
+            <a
+                href="{{ route('user-profile', $request->user_id) }}"
+                class="text-gray-800 hover:underline"
+            >
+                {{ $this->getUserName($request->user_id) }}
+            </a>
         @endscope
 
         {{-- Special `created_at` slot --}}
@@ -130,18 +140,40 @@
                     @if (
                         (auth()->user()->role === \App\Models\User::ROLE_MANAGER && $request->department == auth()->user()->department) ||
                             auth()->user()->role === \App\Models\User::ROLE_ADMIN)
-                        <x-mary-button
-                            icon="o-check"
-                            wire:click="openApproveRequestModal({{ $request->id }})"
-                            spinner="openApproveRequestModal({{ $request->id }})"
-                            class="btn-sm bg-green-500 text-white hover:bg-green-600"
-                        />
-                        <x-mary-button
-                            icon="o-x-circle"
-                            wire:click="openDeclineRequestModal({{ $request->id }})"
-                            spinner="openDeclineRequestModal({{ $request->id }})"
-                            class="btn-sm bg-gray-800 text-white hover:bg-gray-900"
-                        />
+                        @if ($request->status == 'pending')
+                            <div class="flex items-center space-x-2">
+                                <x-mary-button
+                                    icon="o-check"
+                                    class="btn-sm bg-green-500 text-white hover:bg-green-600"
+                                    wire:click="openApproveRequestModal({{ $request->id }})"
+                                    spinner="openApproveRequestModal({{ $request->id }})"
+                                />
+                                <x-mary-button
+                                    icon="o-x-circle"
+                                    wire:click="openDeclineRequestModal({{ $request->id }})"
+                                    spinner="openDeclineRequestModal({{ $request->id }})"
+                                    class="btn-sm bg-gray-800 text-white hover:bg-gray-900"
+                                />
+                            </div>
+                        @elseif ($request->status == 'approved')
+                            <div>
+                                <x-mary-button
+                                    icon="o-x-circle"
+                                    wire:click="openDeclineRequestModal({{ $request->id }})"
+                                    spinner="openDeclineRequestModal({{ $request->id }})"
+                                    class="btn-sm bg-gray-800 text-white hover:bg-gray-900"
+                                />
+                            </div>
+                        @else
+                            <div>
+                                <x-mary-button
+                                    icon="o-check"
+                                    class="btn-sm bg-green-500 text-white hover:bg-green-600"
+                                    wire:click="openApproveRequestModal({{ $request->id }})"
+                                    spinner="openApproveRequestModal({{ $request->id }})"
+                                />
+                            </div>
+                        @endif
                     @endif
                 @endcan
             </div>

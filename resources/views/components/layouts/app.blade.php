@@ -34,27 +34,15 @@
     >
 
         <x-slot:brand>
-            {{-- Drawer toggle for "main-drawer" --}}
-            <label
-                for="main-drawer"
-                class="lg:hidden mr-3"
-            >
-                {{-- <x-icon name="o-bars-3" class="cursor-pointer" /> --}}
-            </label>
-
             {{-- Brand --}}
             <a
-                href="/dashboard"
+                href="{{ route('dashboard') }}"
                 class="font-bold"
             >ADSGLORY Service Achat</a>
         </x-slot:brand>
 
         {{-- Right side actions --}}
         <x-slot:actions>
-            {{-- <x-mary-button
-                tooltip-left="switch-theme"
-                class="btn-circle"
-            > --}}
             <x-mary-theme-toggle
                 tooltip-left="switch-theme"
                 class="bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-900 p-3.5 rounded-full"
@@ -94,7 +82,7 @@
                         <x-mary-menu-item
                             title="{{ $notification->data['message'] }}"
                             link="{{ route('single-request', $notification->data['request_id']) }}"
-                            class="text-gray-800 {{ $notification->data['status'] == 'approved' ? 'text-emerald-500 hover:text-emerald-500 bg-gray-50' : ($notification->data['status'] == 'pending' ? 'text-amber-500 hover:text-amber-500 bg-gray-50' : 'text-rose-600 hover:text-rose-600 bg-gray-50') }}"
+                            class="{{ $notification->data['status'] == 'approved' ? 'text-emerald-500 hover:text-emerald-500 bg-gray-50' : 'text-rose-600 hover:text-rose-600 bg-gray-50' }}"
                             responsive
                         />
                     @endforeach
@@ -173,23 +161,6 @@
                         link="{{ route('requests') }}"
                     />
                 @endcan
-                {{-- @can('manage-requests')
-                    <x-mary-menu-sub
-                        title="Requests"
-                        icon="o-cog-6-tooth"
-                    >
-                        <x-mary-menu-item
-                            title="Manage Requests"
-                            icon="o-inbox"
-                            link="{{ route('requests') }}"
-                        />
-                        <x-mary-menu-item
-                            title="Create Request"
-                            icon="o-plus"
-                            link="{{ route('requests.create') }}"
-                        />
-                    </x-mary-menu-sub>
-                @endcan --}}
             </x-mary-menu>
         </x-slot:sidebar>
 

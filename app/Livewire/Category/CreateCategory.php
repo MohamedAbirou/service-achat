@@ -16,7 +16,7 @@ class CreateCategory extends Component
     public bool $createCategoryModal = false;
 
     protected $rules = [
-        'category' => 'required|string|max:255',
+        'name' => 'required|string|max:255',
     ];
 
     public function render()

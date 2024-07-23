@@ -34,7 +34,13 @@
         >{{ $request->product->name ?? 'N/A' }}</a>
     </div>
     <div class="mt-4">
-        <strong>User:</strong> {{ $request->user->first_name }} {{ $request->user->last_name }}
+        <strong>User:</strong>
+        <a
+            class="text-blue-600 hover:underline"
+            href="{{ route('user-profile', $request->user_id) }}"
+        >
+            {{ $request->user->first_name }} {{ $request->user->last_name }}
+        </a>
     </div>
 
     @can('approve-requests')

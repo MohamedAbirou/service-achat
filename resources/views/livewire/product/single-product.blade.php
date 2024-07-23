@@ -1,7 +1,7 @@
 <div>
     {{-- Import the manage product components --}}
-    <livewire:update-product @saved="$refresh" />
-    <livewire:delete-product @deleted="$refresh" />
+    <livewire:product.update-product @saved="$refresh" />
+    <livewire:product.delete-product @deleted="$refresh" />
 
     <h1 class="text-2xl font-bold">Product Details</h1>
 

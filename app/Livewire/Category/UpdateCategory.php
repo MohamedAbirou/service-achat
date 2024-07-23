@@ -32,7 +32,7 @@ class UpdateCategory extends Component
     {
         $this->validate();
 
-        $this->user->update([
+        $this->category->update([
             'name' => $this->name,
         ]);
 

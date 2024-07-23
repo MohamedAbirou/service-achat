@@ -2,6 +2,7 @@
 
 namespace App\Livewire\User;
 
+use App\Models\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\On;
@@ -30,6 +31,12 @@ class DeleteUser extends Component
 
     public function delete()
     {
+        if (Request::where('user_id', $this->user)->exists()) {
+            $this->error('Cannot delete user with requests');
+            $this->deleteUserModal = false;
+            return;
+        }
+
         User::destroy($this->user);
 
         $this->deleteUserModal = false;

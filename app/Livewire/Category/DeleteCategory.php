@@ -3,6 +3,7 @@
 namespace App\Livewire\Category;
 
 use App\Models\Category;
+use App\Models\Product;
 use Livewire\Attributes\On;
 use Livewire\Component;
 use Mary\Traits\Toast;
@@ -29,6 +30,13 @@ class DeleteCategory extends Component
 
     public function delete()
     {
+        if (Product::where('category_id', $this->category)->exists()) {
+            $this->error('Category has products, please delete them first');
+
+            $this->deleteCategoryModal = false;
+            return;
+        }
+
         Category::destroy($this->category);
 
         $this->deleteCategoryModal = false;

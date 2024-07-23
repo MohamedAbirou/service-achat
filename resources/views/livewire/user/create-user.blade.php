@@ -80,6 +80,42 @@
                 />
             </div>
 
+            <div>
+                <label
+                    for="role"
+                    class="block text-sm font-medium text-gray-700"
+                >Role <span class="text-red-500">*</span></label>
+                <select
+                    id="role"
+                    name="role"
+                    wire:model="role"
+                    class="block mt-1 w-full border-gray-300 rounded-md shadow-sm outline-indigo-500 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                    required
+                >
+                    <option value="">Select a role</option>
+                    <option value="employee">Employee</option>
+                    <option value="manager">Manager</option>
+                </select>
+            </div>
+
+            <div>
+                <label
+                    for="department"
+                    class="block text-sm font-medium text-gray-700"
+                >Department</label>
+                <select
+                    id="department"
+                    name="department"
+                    wire:model="department"
+                    class="block mt-1 w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                >
+                    <option value="">Select a department</option>
+                    @foreach ($departments as $dept)
+                        <option value="{{ $dept }}">{{ $dept }}</option>
+                    @endforeach
+                </select>
+            </div>
+
             <x-slot:actions>
                 <x-mary-button
                     label="Cancel"
