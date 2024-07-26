@@ -1,4 +1,4 @@
-<div>
+<div lazy>
     {{-- Import the manage product components --}}
     <livewire:product.create-product @created="$refresh" />
     <livewire:product.update-product @saved="$refresh" />

@@ -1,4 +1,4 @@
-<div>
+<div lazy>
     {{-- Import the create-request component --}}
     <livewire:request.create-request @created="$refresh" />
     <livewire:request.update-request @saved="$refresh" />

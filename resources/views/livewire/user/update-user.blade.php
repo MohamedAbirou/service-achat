@@ -9,12 +9,11 @@
         <div class="flex items-center space-x-5">
             <div class="w-full">
                 <x-mary-input
-                    id="first_name"
                     class="block mt-1 w-full"
                     type="text"
                     label="First Name"
                     name="first_name"
-                    wire:model.defer="first_name"
+                    wire:model="first_name"
                     required
                     autofocus
                     autocomplete="first_name"
@@ -23,12 +22,11 @@
 
             <div class="w-full">
                 <x-mary-input
-                    id="last_name"
                     class="block mt-1 w-full"
                     type="text"
                     label="Last Name"
                     name="last_name"
-                    wire:model.defer="last_name"
+                    wire:model="last_name"
                     required
                     autofocus
                     autocomplete="last_name"
@@ -38,12 +36,11 @@
 
         <div>
             <x-mary-input
-                id="email"
                 class="block mt-1 w-full"
                 type="email"
                 label="Email"
                 name="email"
-                wire:model.defer="email"
+                wire:model="email"
                 required
                 autocomplete="username"
             />
@@ -51,11 +48,11 @@
 
         <div>
             <label
-                for="role"
+                for="roleUpdate"
                 class="block text-sm font-medium text-gray-700"
             >Role <span class="text-red-500">*</span></label>
             <select
-                id="role"
+                id="roleUpdate"
                 name="role"
                 wire:model="role"
                 class="block mt-1 w-full border-gray-300 rounded-md shadow-sm outline-indigo-500 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
@@ -70,11 +67,11 @@
 
         <div>
             <label
-                for="department"
+                for="departmentUpdate"
                 class="block text-sm font-medium text-gray-700"
             >Department <span class="text-red-500">*</span></label>
             <select
-                id="department"
+                id="departmentUpdate"
                 name="department"
                 wire:model="department"
                 autocomplete="department"

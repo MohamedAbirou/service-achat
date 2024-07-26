@@ -1,4 +1,4 @@
-<div>
+<div lazy>
     {{-- Import the create-user component --}}
     <livewire:user.create-user @created="$refresh" />
     <livewire:user.update-user @saved="$refresh" />

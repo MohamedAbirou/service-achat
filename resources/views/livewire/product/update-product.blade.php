@@ -41,12 +41,16 @@
                         wire:model="image"
                         label="Image"
                         accept="image/png,image/jpeg"
-                    >
-                    </x-mary-file>
+                    />
                     <img
-                        src="{{ $imageUrl ? asset($imageUrl) : 'https://via.placeholder.com/150' }}"
+                        src="{{ $imageUrl ? asset($imageUrl) : 'https://via.placeholder.com/150?text=No+Image' }}"
                         class="h-20 mt-2 rounded-lg"
                     />
+                    <div
+                        wire:loading
+                        wire:target="image"
+                        class="mt-2 text-sm text-gray-500 dark:text-gray-400"
+                    >Uploading... (Don't press update yet!)</div>
                 </div>
 
                 <div>
@@ -78,6 +82,8 @@
                         class="btn-primary"
                         type="submit"
                         spinner="update"
+                        wire:disabled
+                        wire:target="image"
                     />
                 </x-slot:actions>
             </x-mary-form>

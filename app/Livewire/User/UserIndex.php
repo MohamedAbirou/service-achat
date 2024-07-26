@@ -3,9 +3,11 @@
 namespace App\Livewire\User;
 
 use App\Models\User;
+use Livewire\Attributes\Lazy;
 use Livewire\Component;
 use Livewire\WithPagination;
 
+#[Lazy]
 class UserIndex extends Component
 {
     use WithPagination;
@@ -48,6 +50,16 @@ class UserIndex extends Component
             'users' => $users,
             'departments' => $this->departments,
         ]);
+    }
+
+    public function placeholder()
+    {
+        return <<<'HTML'
+        <div class="flex items-center justify-center h-full">
+            <!-- Loading spinner... -->
+            <h3 class="text-2xl font-semibold text-gray-500 dark:text-gray-400">Loading users...</h3>
+        </div>
+        HTML;
     }
 
     public function updateDepartmentFilter($department)

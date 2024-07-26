@@ -1,4 +1,4 @@
-<div>
+<div lazy>
     {{-- Import the create-category component --}}
     <livewire:category.create-category @created="$refresh" />
     <livewire:category.update-category @saved="$refresh" />

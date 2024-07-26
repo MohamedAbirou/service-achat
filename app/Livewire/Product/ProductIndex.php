@@ -3,9 +3,11 @@
 namespace App\Livewire\Product;
 
 use App\Models\Product;
+use Livewire\Attributes\Lazy;
 use Livewire\Component;
 use Livewire\WithPagination;
 
+#[Lazy]
 class ProductIndex extends Component
 {
     use WithPagination;
@@ -71,6 +73,16 @@ class ProductIndex extends Component
             'products' => $products,
             'filters' => $this->filters,
         ]);
+    }
+
+    public function placeholder()
+    {
+        return <<<'HTML'
+        <div class="flex items-center justify-center h-full">
+            <!-- Loading spinner... -->
+        <h3 class="text-2xl font-semibold text-gray-500 dark:text-gray-400">Loading products...</h3>
+        </div>
+        HTML;
     }
 
     public function openCreateProductModal()

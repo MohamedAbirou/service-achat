@@ -12,6 +12,7 @@ class UserProfile extends Component
 
     public function mount($userId)
     {
+        $this->authorize('manage-users');
         $this->user = User::findOrFail($userId);
     }
 

@@ -38,6 +38,10 @@
                     label="Image"
                     accept="image/png, image/jpeg"
                 />
+                <div
+                    wire:loading
+                    wire:target="image"
+                >Uploading...</div>
             </div>
 
             <div>

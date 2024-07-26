@@ -18,10 +18,12 @@ class UpdateProduct extends Component
     public Product $product;
 
     public string $name = '';
+
     public float $price = 0.0;
 
     // UploadedFile or string
     public ?UploadedFile $image = null;
+
     public ?string $imageUrl = null;
 
     public ?int $category_id = null;
