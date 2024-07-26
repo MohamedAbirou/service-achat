@@ -41,7 +41,7 @@ class ProductIndex extends Component
 
     public function render()
     {
-        $products = Product::latest()
+        $products = Product::query()
             ->when($this->query, function ($query) {
                 $query->where('name', 'like', '%' . $this->query . '%')
                     ->orWhereRelation('category', 'name', 'like', '%' . $this->query . '%');

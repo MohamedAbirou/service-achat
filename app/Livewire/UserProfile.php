@@ -17,16 +17,6 @@ class UserProfile extends Component
 
     public function render()
     {
-        // $this->user->load('requests');
-
-        // if ($this->user->requests->count() > 0) {
-        //     $this->user->requests->each(function ($request) {
-        //         $request->load('product');
-        //     });
-        // }
-
-        // dd($this->user->role);
-
         return view('livewire.user-profile', ['user' => $this->user]);
     }
 

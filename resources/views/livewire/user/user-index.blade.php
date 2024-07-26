@@ -63,7 +63,7 @@
                 href="{{ route('user-profile', $user->id) }}"
                 class="flex flex-col hover:underline"
             >
-                <p class="text-sm font-medium text-gray-900">{{ $user->first_name }}</p>
+                <p class="text-sm font-medium text-gray-900 dark:text-gray-200">{{ $user->first_name }}</p>
                 <p class="text-sm text-gray-500">{{ $user->last_name }}</p>
             </a>
         @endscope

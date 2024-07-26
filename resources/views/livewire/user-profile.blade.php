@@ -3,18 +3,19 @@
     <livewire:request.delete-request @deleted="$refresh" />
 
     <!-- User Profile Header -->
-    <div class="bg-white rounded-lg shadow-lg p-6">
+    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
         <div>
-            <h1 class="text-2xl font-bold text-gray-900">{{ $user->first_name }} {{ $user->last_name }}</h1>
-            <p class="text-sm text-gray-600">{{ $user->email }}</p>
+            <h1 class="text-2xl font-bold text-gray-900 dark:text-white">{{ $user->first_name }} {{ $user->last_name }}
+            </h1>
+            <p class="text-sm text-gray-600 dark:text-gray-400">{{ $user->email }}</p>
         </div>
     </div>
 
     <!-- User Details Section -->
     <div class="mt-8">
-        <h2 class="text-xl font-semibold text-gray-800">User Details</h2>
+        <h2 class="text-xl font-semibold text-gray-800 dark:text-white">User Details</h2>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-            <x-mary-card class="bg-white shadow-lg flex items-center">
+            <x-mary-card class="bg-white dark:bg-gray-800 shadow-lg flex items-center">
                 <x-slot:title>
                     Role
                 </x-slot:title>
@@ -25,7 +26,7 @@
                 </p>
             </x-mary-card>
 
-            <x-mary-card class="bg-white shadow-lg flex items-center">
+            <x-mary-card class="bg-white dark:bg-gray-800 shadow-lg flex items-center">
                 <x-slot:title>
                     Department
                 </x-slot:title>
@@ -35,7 +36,7 @@
                 </p>
             </x-mary-card>
 
-            <x-mary-card class="bg-white shadow-lg flex items-center">
+            <x-mary-card class="bg-white dark:bg-gray-800 shadow-lg flex items-center">
                 <x-slot:title>
                     Created At
                 </x-slot:title>
@@ -43,7 +44,7 @@
 
             </x-mary-card>
 
-            <x-mary-card class="bg-white shadow-lg flex items-center">
+            <x-mary-card class="bg-white dark:bg-gray-800 shadow-lg flex items-center">
                 <x-slot:title>
                     Updated At
                 </x-slot:title>
@@ -54,9 +55,9 @@
 
     <!-- User Requests Section -->
     <div class="mt-8">
-        <h2 class="text-xl font-semibold text-gray-800">User Requests</h2>
-        @if ($user->requests->isEmpty())
-            <p class="mt-4 text-gray-600">No requests found for this user.</p>
+        <h2 class="text-xl font-semibold text-gray-800 dark:text-gray-200">User Requests</h2>
+        @if ($user->requests()->count() === 0)
+            <p class="mt-4 text-gray-600 dark:text-gray-400">No requests found for this user.</p>
         @else
             <x-mary-table
                 :headers="[
@@ -66,15 +67,16 @@
                     ['key' => 'created_at', 'label' => 'Created At'],
                     ['key' => 'actions', 'label' => 'Actions', 'sortable' => false],
                 ]"
-                :rows="$user->requests"
+                :rows="$user->requests->sortByDesc('created_at')"
                 striped
+                class="dark:text-gray-200"
             >
                 @scope('cell_id', $request)
-                    <p class="text-sm text-gray-900">{{ $request->id }}</p>
+                    <p class="text-sm text-gray-900 dark:text-gray-200">{{ $request->id }}</p>
                 @endscope
 
                 @scope('cell_title', $request)
-                    <p class="text-sm text-gray-900">{{ $request->title }}</p>
+                    <p class="text-sm text-gray-900 dark:text-gray-200">{{ $request->title }}</p>
                 @endscope
 
                 @scope('cell_status', $request)
@@ -85,7 +87,7 @@
                 @endscope
 
                 @scope('cell_created_at', $request)
-                    <p class="text-sm text-gray-600">{{ $request->created_at->format('M d, Y') }}</p>
+                    <p class="text-sm text-gray-600 dark:text-gray-400">{{ $request->created_at->format('M d, Y') }}</p>
                 @endscope
 
                 @scope('cell_actions', $request)

@@ -26,6 +26,7 @@
                     type="number"
                     label="Price"
                     step="0.01"
+                    min="0"
                     wire:model.defer="price"
                     required
                 />

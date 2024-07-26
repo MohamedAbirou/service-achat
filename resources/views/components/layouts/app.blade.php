@@ -19,10 +19,12 @@
         content="{{ csrf_token() }}"
     >
 
-    <title>Livewire + Mary UI</title>
+    <title>ADSGLORY Service Achat</title>
 
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+    @livewireStyles
 </head>
 
 <body class="font-sans antialiased">
@@ -34,12 +36,16 @@
     >
 
         <x-slot:brand>
+
             {{-- Brand --}}
             <a
                 href="{{ route('dashboard') }}"
                 class="font-bold"
             >ADSGLORY Service Achat</a>
+
         </x-slot:brand>
+
+
 
         {{-- Right side actions --}}
         <x-slot:actions>
@@ -55,13 +61,13 @@
                 no-wire-navigate
                 onclick="document.getElementById('logout-form').submit();"
             />
-            <x-mary-button
+            {{-- <x-mary-button
                 label="Messages"
                 icon="o-envelope"
                 link="###"
                 class="btn-ghost btn-sm"
                 responsive
-            />
+            /> --}}
             <x-mary-dropdown>
                 <x-slot:trigger>
                     <x-mary-button
@@ -82,7 +88,7 @@
                         <x-mary-menu-item
                             title="{{ $notification->data['message'] }}"
                             link="{{ route('single-request', $notification->data['request_id']) }}"
-                            class="{{ $notification->data['status'] == 'approved' ? 'text-emerald-500 hover:text-emerald-500 bg-gray-50' : 'text-rose-600 hover:text-rose-600 bg-gray-50' }}"
+                            class="{{ $notification->data['status'] == 'approved' ? 'text-emerald-500 hover:text-emerald-500 bg-gray-50 dark:bg-gray-800' : ($notification->data['status'] == 'declined' ? 'text-rose-600 hover:text-rose-600 bg-gray-50 dark:bg-gray-800' : 'text-gray-500 hover:text-gray-500 bg-gray-50 dark:bg-gray-800') }}"
                             responsive
                         />
                     @endforeach
@@ -104,7 +110,6 @@
             collapsible
             class="bg-base-200"
         >
-
             {{-- User --}}
             @if ($user = auth()->user())
                 <x-mary-list-item
@@ -116,7 +121,7 @@
                     link="/user/profile"
                 >
                     <x-slot:sub-value
-                        class="bg-{{ ($user->role == 'employee' ? 'emerald-500' : $user->role == 'manager') ? 'amber-500' : 'rose-600 ' }} px-5 py-0.5 mt-1 text-white font-semibold rounded-full text-lg w-fit capitalize"
+                        class="bg-{{ $user->role == 'employee' ? 'emerald-500' : ($user->role == 'manager' ? 'amber-500' : 'rose-600 ') }} px-5 py-0.5 mt-1 text-white font-semibold rounded-full text-lg w-fit capitalize"
                     >{{ $user->role }}</x-slot:sub-value>
                 </x-mary-list-item>
 
@@ -193,7 +198,6 @@
     </form>
 
     @stack('modals')
-
 </body>
 
 </html>

@@ -91,10 +91,15 @@
                     wire:model="role"
                     class="block mt-1 w-full border-gray-300 rounded-md shadow-sm outline-indigo-500 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                     required
+                    :options="$roles"
                 >
                     <option value="">Select a role</option>
-                    <option value="employee">Employee</option>
-                    <option value="manager">Manager</option>
+                    @foreach ($roles as $role)
+                        <option
+                            wire:key="{{ $role }}"
+                            value="{{ $role }}"
+                        >{{ $role }}</option>
+                    @endforeach
                 </select>
             </div>
 
@@ -102,7 +107,7 @@
                 <label
                     for="department"
                     class="block text-sm font-medium text-gray-700"
-                >Department</label>
+                >Department <span class="text-red-500">*</span></label>
                 <select
                     id="department"
                     name="department"
@@ -111,7 +116,10 @@
                 >
                     <option value="">Select a department</option>
                     @foreach ($departments as $dept)
-                        <option value="{{ $dept }}">{{ $dept }}</option>
+                        <option
+                            wire:key="{{ $dept }}"
+                            value="{{ $dept }}"
+                        >{{ $dept }}</option>
                     @endforeach
                 </select>
             </div>

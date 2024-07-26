@@ -25,7 +25,7 @@
         />
     </div>
     <div class="mt-4">
-        <strong>Department:</strong> {{ $request->department }}
+        <strong>Department:</strong> {{ $request->department ?? 'Unknown' }}
     </div>
     <div class="mt-4">
         <strong>Product:</strong> <a

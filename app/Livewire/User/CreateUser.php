@@ -29,6 +29,7 @@ class CreateUser extends Component
 
     public array $departments = ['Marketing', 'Sales', 'Finance', 'Human Resources', 'IT', 'Accounting', 'Support', 'Customer Service', 'Operations', 'Legal'];
 
+    public array $roles = ['Employee', 'Manager', 'Admin'];
 
     protected $rules = [
         'first_name' => 'required|string|max:255',
@@ -39,9 +40,10 @@ class CreateUser extends Component
         'department' => 'required|string'
     ];
 
+
     public function render()
     {
-        return view('livewire.user.create-user', ['departments' => $this->departments]);
+        return view('livewire.user.create-user');
     }
 
     #[On('openCreateUserModal')]

@@ -40,6 +40,8 @@ class DeleteProduct extends Component
 
         Product::destroy($this->product);
 
+        $this->redirect('/products');
+
         $this->deleteProductModal = false;
         $this->product = null;
 

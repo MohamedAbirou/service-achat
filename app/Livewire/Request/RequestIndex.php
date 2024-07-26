@@ -21,7 +21,7 @@ class RequestIndex extends Component
         ['key' => 'department', 'label' => 'Department', 'sortable' => false],
         ['key' => 'product_id', 'label' => 'Product', 'sortable' => false],
         ['key' => 'user_id', 'label' => 'User', 'sortable' => false],
-        ['key' => 'created_at', 'label' => 'Created At', 'sortable' => false],
+        ['key' => 'created_at', 'label' => 'Created At', 'sortable' => false, 'desc' => true],
         ['key' => 'updated_at', 'label' => 'Updated At', 'sortable' => false],
         ['key' => 'actions', 'label' => 'Actions', 'sortable' => false],
     ];
@@ -44,7 +44,7 @@ class RequestIndex extends Component
     {
         $user = Auth::user();
 
-        $requests = Request::query()
+        $requests = Request::latest()
             ->when($user->role === 'employee', function ($query) use ($user) {
                 // Employees can only see their own requests
                 $query->where('user_id', $user->id);
@@ -129,7 +129,8 @@ class RequestIndex extends Component
         return Request::where('user_id', $userId)->first()->user->first_name ?? 'N/A';
     }
 
-    public function search() {
+    public function search()
+    {
         $this->resetPage();
     }
 }

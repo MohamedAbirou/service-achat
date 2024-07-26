@@ -88,7 +88,7 @@
         @scope('cell_product_id', $request)
             <a
                 href="{{ route('single-product', $request->product_id) }}"
-                class="text-gray-800 hover:underline"
+                class="text-gray-800 dark:text-gray-300 hover:underline"
             >
                 {{ $this->getProductName($request->product_id) }}
             </a>
@@ -98,7 +98,7 @@
         @scope('cell_user_id', $request)
             <a
                 href="{{ route('user-profile', $request->user_id) }}"
-                class="text-gray-800 hover:underline"
+                class="text-gray-800 dark:text-gray-300 hover:underline"
             >
                 {{ $this->getUserName($request->user_id) }}
             </a>

@@ -38,11 +38,11 @@ class UserIndex extends Component
     public function render()
     {
         $users = User::latest()
-        ->when($this->query, fn ($query, $value) => $query->where('first_name', 'like', '%' . $value . '%')
-        ->orWhere('last_name', 'like', '%' . $value . '%')
-        ->orWhere('email', 'like', '%' . $value . '%'))
-        ->when(count($this->filters['department']) > 0, fn ($query) => $query->whereIn('department', $this->filters['department']))
-        ->orderBy(...array_values($this->sortBy))->paginate(10);
+            ->when($this->query, fn($query, $value) => $query->where('first_name', 'like', '%' . $value . '%')
+                ->orWhere('last_name', 'like', '%' . $value . '%')
+                ->orWhere('email', 'like', '%' . $value . '%'))
+            ->when(count($this->filters['department']) > 0, fn($query) => $query->whereIn('department', $this->filters['department']))
+            ->orderBy(...array_values($this->sortBy))->paginate(10);
 
         return view('livewire.user.user-index', [
             'users' => $users,
@@ -51,14 +51,14 @@ class UserIndex extends Component
     }
 
     public function updateDepartmentFilter($department)
-{
-    if (($key = array_search($department, $this->filters['department'])) !== false) {
-        unset($this->filters['department'][$key]);
-    } else {
-        $this->filters['department'][] = $department;
+    {
+        if (($key = array_search($department, $this->filters['department'])) !== false) {
+            unset($this->filters['department'][$key]);
+        } else {
+            $this->filters['department'][] = $department;
+        }
+        $this->resetPage();
     }
-    $this->resetPage();
-}
 
 
     public function openCreateUserModal()
@@ -76,7 +76,8 @@ class UserIndex extends Component
         $this->dispatch('openDeleteUserModal', $user->id);
     }
 
-    public function search() {
+    public function search()
+    {
         $this->resetPage();
     }
 }
